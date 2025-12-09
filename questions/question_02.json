@@ -1,0 +1,18 @@
+{
+  "id": 2,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Detect if an array contains duplicates efficiently",
+  "options": [
+    "Nested loops: O(n²)",
+    "Sort then compare adjacent: O(n log n)",
+    "Use Set to track seen elements: O(n)",
+    "Use binary search: O(n log n)"
+  ],
+  "correct": 2,
+  "explanation": "**Optimal Solution: Hash Set - O(n)**\n\n**Example:** arr = [1, 2, 3, 1]\n\nIteration process:\ni=0: seen={1}, continue\ni=1: seen={1,2}, continue\ni=2: seen={1,2,3}, continue\ni=3: 1 in seen? YES → return True\n\n**Visual:**\nArray:  [1,  2,  3,  1]\n         ↓   ↓   ↓   ↓\nSet:    {1}→{1,2}→{1,2,3}→DUPLICATE!\n\n**Python Implementation:**\n```python\ndef containsDuplicate(arr):\n    seen = set()\n    for num in arr:\n        if num in seen:\n            return True\n        seen.add(num)\n    return False\n\n# One-liner:\nreturn len(arr) != len(set(arr))\n```\n\n**Complexity:**\n- Time: O(n) - single pass\n- Space: O(n) - hash set storage\n\n**Key Insight:** Set lookup is O(1) average case, making this optimal for unsorted data.",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(n)",
+  "videoUrl": "https://www.youtube.com/watch?v=3OamzN90kPg",
+  "videoTitle": "Contains Duplicate - Leetcode 217 - Python (NeetCode)"
+}

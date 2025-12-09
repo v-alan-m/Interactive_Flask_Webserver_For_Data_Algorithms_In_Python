@@ -1,0 +1,18 @@
+{
+  "id": 1,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Find the top K most frequent elements in an array [1,1,1,2,2,3] where K=2",
+  "options": [
+    "Use sorting: O(n log n)",
+    "Use heap (priority queue): O(n log k)",
+    "Use hash map + bucket sort: O(n)",
+    "Use binary search: O(log n)"
+  ],
+  "correct": 2,
+  "explanation": "**Optimal Solution: Hash Map + Bucket Sort - O(n)**\n\n**Example:** arr = [1,1,1,2,2,3], K=2\n\nStep 1 - Count frequencies:\n{1: 3, 2: 2, 3: 1}\n\nStep 2 - Bucket sort by frequency:\nIndex:  0    1    2    3\nBucket: []   [3]  [2]  [1]\n        ↑freq ↑freq ↑freq ↑freq\n\nStep 3 - Collect top K from right:\nResult: [1, 2]\n\n**Python Implementation:**\n```python\nfrom collections import Counter\ndef topK(arr, k):\n    count = Counter(arr)\n    buckets = [[] for _ in range(len(arr) + 1)]\n    for num, freq in count.items():\n        buckets[freq].append(num)\n    result = []\n    for i in range(len(buckets) - 1, 0, -1):\n        result.extend(buckets[i])\n        if len(result) >= k:\n            return result[:k]\n```\n\n**Complexity:**\n- Time: O(n) - single pass + bucket traversal\n- Space: O(n) - hash map + buckets\n\n**Key Insight:** Bucket sort avoids comparison-based sorting when frequency range is bounded by array length.",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(n)",
+  "videoUrl": "https://www.youtube.com/watch?v=YPTqKIgVk-k",
+  "videoTitle": "Top K Frequent Elements - Leetcode 347 - Python (NeetCode)"
+}
