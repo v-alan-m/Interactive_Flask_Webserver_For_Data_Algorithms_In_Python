@@ -19,6 +19,10 @@ HTML_TEMPLATE = '''
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Structures & Python Quiz</title>
+    <!-- Highlight.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -188,8 +192,7 @@ HTML_TEMPLATE = '''
         }
 
         .code-block {
-            background: #1e293b;
-            color: #e2e8f0;
+            background: #282c34;
             padding: 1rem;
             border-radius: 8px;
             overflow-x: auto;
@@ -197,6 +200,17 @@ HTML_TEMPLATE = '''
             font-family: 'Courier New', monospace;
             font-size: 0.875rem;
             line-height: 1.5;
+        }
+
+        .code-block code {
+            display: block;
+            padding: 0;
+        }
+
+        /* Override highlight.js styles for better readability */
+        .hljs {
+            background: #282c34;
+            color: #abb2bf;
         }
 
         .complexity {
@@ -444,6 +458,9 @@ HTML_TEMPLATE = '''
 
             container.innerHTML = html;
             updateProgress();
+
+            // Apply syntax highlighting to code blocks
+            applySyntaxHighlighting();
         }
 
         // Format explanation with code blocks
@@ -455,8 +472,11 @@ HTML_TEMPLATE = '''
             parts.forEach((part, index) => {
                 if (index % 2 === 1) {
                     // Code block
-                    const code = part.replace(/^python\\n/, '');
-                    formatted += `<div class="code-block">${escapeHtml(code)}</div>`;
+                    const lines = part.split('\\n');
+                    const language = lines[0].trim();
+                    const code = lines.slice(1).join('\\n');
+
+                    formatted += `<div class="code-block"><pre><code class="language-${language}">${escapeHtml(code)}</code></pre></div>`;
                 } else {
                     // Regular text - preserve formatting
                     formatted += part.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -470,6 +490,13 @@ HTML_TEMPLATE = '''
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // Apply syntax highlighting after rendering
+        function applySyntaxHighlighting() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
         }
 
         // Handle answer selection
