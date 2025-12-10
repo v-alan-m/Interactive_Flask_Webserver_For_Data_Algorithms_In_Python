@@ -1,0 +1,18 @@
+{
+  "id": 12,
+  "topic": "Python",
+  "level": "Mid Level",
+  "question": "Represent a graph as a dictionary of lists in Python",
+  "options": [
+    "Use nested lists: graph = [[]]",
+    "Use dict of lists: graph = {node: [neighbors]}",
+    "Use adjacency matrix: graph = [[0,1]]",
+    "Use set of tuples: graph = {(u,v)}"
+  ],
+  "correct": 1,
+  "explanation": "**Optimal Solution: Dictionary of Lists - Most Pythonic**\n\n**Example Graph:**\n```\n    1 --- 2\n    |     |\n    3 --- 4\n```\n\n**Representation:**\n```python\ngraph = {\n    1: [2, 3],\n    2: [1, 4],\n    3: [1, 4],\n    4: [2, 3]\n}\n```\n\n**Why Dictionary of Lists?**\n```\nAdvantages:\n✓ Easy to add/remove edges\n✓ Efficient neighbor lookup: O(1)\n✓ Space efficient for sparse graphs\n✓ Natural Python syntax\n✓ Easy to iterate neighbors\n\ngraph[1]  # [2, 3] - instant access\n```\n\n**Common Graph Operations:**\n```python\n# Add edge\ndef add_edge(graph, u, v):\n    graph[u].append(v)\n    graph[v].append(u)  # for undirected\n\n# BFS traversal\nfrom collections import deque\ndef bfs(graph, start):\n    visited = set()\n    queue = deque([start])\n    visited.add(start)\n    \n    while queue:\n        node = queue.popleft()\n        print(node)\n        for neighbor in graph[node]:\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n# DFS traversal\ndef dfs(graph, node, visited=None):\n    if visited is None:\n        visited = set()\n    visited.add(node)\n    print(node)\n    for neighbor in graph[node]:\n        if neighbor not in visited:\n            dfs(graph, neighbor, visited)\n```\n\n**Using defaultdict:**\n```python\nfrom collections import defaultdict\n\n# Automatically creates empty list for new nodes\ngraph = defaultdict(list)\ngraph[1].append(2)\ngraph[1].append(3)\n# No KeyError if node doesn't exist!\n```\n\n**Complexity:**\n- Space: O(V + E) where V=vertices, E=edges\n- Neighbor lookup: O(1)\n- Check if edge exists: O(degree of node)\n\n**Key Insight:** Dict of lists is the most Pythonic and efficient for most graph algorithms.",
+  "timeComplexity": "O(1) neighbor access",
+  "spaceComplexity": "O(V + E)",
+  "videoUrl": "https://www.youtube.com/watch?v=tWVWeAqZ0WU",
+  "videoTitle": "Graph Representation in Python (William Fiset)"
+}

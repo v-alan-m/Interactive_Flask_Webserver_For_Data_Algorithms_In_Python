@@ -1,0 +1,18 @@
+{
+  "id": 9,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Design a stack that supports push, pop, and getMin in O(1) time",
+  "options": [
+    "Store min value in variable: O(n) when min is popped",
+    "Use two stacks (main + min): O(1) all operations",
+    "Sort the stack: O(n log n)",
+    "Use heap alongside stack: O(log n)"
+  ],
+  "correct": 1,
+  "explanation": "**Optimal Solution: Two Stacks - O(1) all operations**\n\n**Concept:** Main stack for values, auxiliary stack tracks minimums\n\n**Example:** Operations: push(3), push(5), push(2), push(1), getMin(), pop(), getMin()\n\nState after each operation:\n\n```\npush(3):\nmain:   [3]\nminStk: [3]  (3 is min so far)\n\npush(5):\nmain:   [3, 5]\nminStk: [3]  (3 still min)\n\npush(2):\nmain:   [3, 5, 2]\nminStk: [3, 2]  (2 is new min)\n\npush(1):\nmain:   [3, 5, 2, 1]\nminStk: [3, 2, 1]  (1 is new min)\n\ngetMin() → 1 (top of minStk)\n\npop() → removes 1:\nmain:   [3, 5, 2]\nminStk: [3, 2]\n\ngetMin() → 2 (top of minStk)\n```\n\n**Visual:**\n```\n     main    minStk\npush(3): [3]    [3]\npush(5): [5]    [3]\n         [3]    \npush(2): [2]    [2]\n         [5]    [3]\n         [3]    \n```\n\n**Python Implementation:**\n```python\nclass MinStack:\n    def __init__(self):\n        self.stack = []\n        self.min_stack = []\n    \n    def push(self, val):\n        self.stack.append(val)\n        # Push min of (current val, previous min)\n        min_val = min(val, self.min_stack[-1] if self.min_stack else val)\n        self.min_stack.append(min_val)\n    \n    def pop(self):\n        self.stack.pop()\n        self.min_stack.pop()\n    \n    def top(self):\n        return self.stack[-1]\n    \n    def getMin(self):\n        return self.min_stack[-1]\n```\n\n**Complexity:**\n- All operations: O(1)\n- Space: O(n) for both stacks\n\n**Key Insight:** Min stack mirrors main stack, storing the minimum at each level.",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(n)",
+  "videoUrl": "https://www.youtube.com/watch?v=qkLl7nAwDPo",
+  "videoTitle": "Min Stack - Leetcode 155 - Python (NeetCode)"
+}

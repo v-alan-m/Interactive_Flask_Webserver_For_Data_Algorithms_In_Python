@@ -1,0 +1,18 @@
+{
+  "id": 8,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Implement autocomplete with a Trie (prefix tree)",
+  "options": [
+    "Use list and iterate: O(n*m) per search",
+    "Use hash map: O(m) but no prefix support",
+    "Use Trie: O(m) insert/search, efficient prefix",
+    "Use binary search tree: O(log n) average"
+  ],
+  "correct": 2,
+  "explanation": "**Optimal Solution: Trie - O(m) for word of length m**\n\n**Structure:** Tree where each node represents a character\n\n**Example:** Insert [\"cat\", \"car\", \"card\", \"dog\"]\n\n```\n           root\n          /    \\\n         c      d\n         |      |\n         a      o\n        / \\     |\n       t   r    g*\n       |   |\n       *   d\n           |\n           *\n```\n\n(* = end of word)\n\n**Search for prefix \"ca\":**\nroot → c → a (found 3 words: cat, car, card)\n\n**Visual Traversal:**\n```\nPrefix \"ca\":\nroot\n  ↓ (c exists?)\n  c\n  ↓ (a exists?)\n  a\n  ↓ (collect all paths)\n  → t* (cat)\n  → r → d* (car, card)\n```\n\n**Python Implementation:**\n```python\nclass TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.is_end = False\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    \n    def insert(self, word):\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n        node.is_end = True\n    \n    def search(self, word):\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                return False\n            node = node.children[char]\n        return node.is_end\n    \n    def startsWith(self, prefix):\n        node = self.root\n        for char in prefix:\n            if char not in node.children:\n                return False\n            node = node.children[char]\n        return True\n```\n\n**Complexity:**\n- Insert/Search: O(m) where m = word length\n- Space: O(ALPHABET_SIZE * N * M) worst case\n\n**Key Insight:** Tries share common prefixes, making them memory efficient for large word sets.",
+  "timeComplexity": "O(m)",
+  "spaceComplexity": "O(N*M)",
+  "videoUrl": "https://www.youtube.com/watch?v=oobqoCJlHA0",
+  "videoTitle": "Implement Trie (Prefix Tree) - Leetcode 208 - Python (NeetCode)"
+}

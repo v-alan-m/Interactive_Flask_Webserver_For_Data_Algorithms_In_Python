@@ -1,0 +1,18 @@
+{
+  "id": 5,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Find maximum in sliding window of size K: arr=[1,3,-1,-3,5,3,6,7], K=3",
+  "options": [
+    "Brute force: O(n*k) check each window",
+    "Use max heap: O(n log k)",
+    "Use deque (monotonic queue): O(n)",
+    "Use BST: O(n log k)"
+  ],
+  "correct": 2,
+  "explanation": "**Optimal Solution: Monotonic Deque - O(n)**\n\n**Concept:** Maintain deque of indices in decreasing order of values\n\n**Example:** arr=[1,3,-1,-3,5,3,6,7], K=3\n\n```\nWindow [1,3,-1]:\ndeque=[1] → [1,0] → [1] (indices)\nvalues: 3 → max=3\n\nWindow [3,-1,-3]:\ndeque=[1,2,3]\nvalues: 3,-1,-3 → max=3\n\nWindow [-1,-3,5]:\nRemove expired idx=1, add 5\ndeque=[4] → max=5\n\nWindow [-3,5,3]:\ndeque=[4,5] → max=5\n```\n\n**Visual Deque State:**\n```\nWindow:     [1, 3,-1] [-3, 5, 3] [6, 7]\nDeque idx:  [1]       [4]         [6,7]\nMax vals:    3         5           7\n```\n\n**Why it works:**\n- Keep indices in decreasing value order\n- Remove expired indices (outside window)\n- Front of deque = max of window\n\n**Python Implementation:**\n```python\nfrom collections import deque\n\ndef maxSlidingWindow(arr, k):\n    dq = deque()  # stores indices\n    result = []\n    \n    for i in range(len(arr)):\n        # Remove expired\n        while dq and dq[0] <= i - k:\n            dq.popleft()\n        \n        # Remove smaller elements\n        while dq and arr[dq[-1]] < arr[i]:\n            dq.pop()\n        \n        dq.append(i)\n        \n        if i >= k - 1:\n            result.append(arr[dq[0]])\n    \n    return result\n```\n\n**Complexity:**\n- Time: O(n) - each element added/removed once\n- Space: O(k) - deque size\n\n**Key Insight:** Each element enters/exits deque exactly once.",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(k)",
+  "videoUrl": "https://www.youtube.com/watch?v=DfljaUwZsOk",
+  "videoTitle": "Sliding Window Maximum - Leetcode 239 - Python (NeetCode)"
+}

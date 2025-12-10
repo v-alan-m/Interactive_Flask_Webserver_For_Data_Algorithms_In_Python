@@ -1,0 +1,18 @@
+{
+  "id": 6,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Count character frequencies in a string efficiently",
+  "options": [
+    "Use nested loops: O(n²)",
+    "Use dictionary/hash map: O(n)",
+    "Use array of size 26: O(n)",
+    "Both B and C are optimal"
+  ],
+  "correct": 3,
+  "explanation": "**Optimal Solution: Dictionary or Array - O(n)**\n\n**Example:** s = \"aabbc\"\n\n**Approach 1: Dictionary**\n```\nIteration:\na → {a:1}\na → {a:2}\nb → {a:2, b:1}\nb → {a:2, b:2}\nc → {a:2, b:2, c:1}\n```\n\n**Approach 2: Array (for lowercase letters)**\n```\nIndex mapping: a=0, b=1, c=2, ...\n\nfreq = [0] * 26\nAfter 'a': [1, 0, 0, ...]\nAfter 'aa': [2, 0, 0, ...]\nAfter 'aab': [2, 1, 0, ...]\nAfter 'aabb': [2, 2, 0, ...]\nAfter 'aabbc': [2, 2, 1, ...]\n```\n\n**Visual Comparison:**\n```\nString: a  a  b  b  c\nDict:   1→2  1→2  1\nArray:  [2, 2, 1, 0, 0, ...]\n```\n\n**Python Implementation:**\n```python\nfrom collections import Counter\n\n# Method 1: Counter (most Pythonic)\nfreq = Counter(s)\n\n# Method 2: Dictionary\nfreq = {}\nfor char in s:\n    freq[char] = freq.get(char, 0) + 1\n\n# Method 3: Array (lowercase only)\nfreq = [0] * 26\nfor char in s:\n    freq[ord(char) - ord('a')] += 1\n```\n\n**Complexity:**\n- Time: O(n) - single pass\n- Space: O(k) where k = unique chars (max 26 for lowercase)\n\n**Key Insight:** Array is slightly faster but less flexible; dict handles any character set.",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(k)",
+  "videoUrl": "https://www.youtube.com/watch?v=YG8iol_n5W8",
+  "videoTitle": "Valid Anagram using Character Count - Python (Abdul Bari style explanation)"
+}

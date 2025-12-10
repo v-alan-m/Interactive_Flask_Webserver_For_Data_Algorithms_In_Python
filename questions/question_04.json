@@ -1,0 +1,18 @@
+{
+  "id": 4,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Implement an LRU (Least Recently Used) Cache with O(1) operations",
+  "options": [
+    "Use dictionary only: O(n) for eviction",
+    "Use list + dictionary: O(n) for moving",
+    "Use doubly linked list + hash map: O(1) all ops",
+    "Use queue: O(n) for access"
+  ],
+  "correct": 2,
+  "explanation": "**Optimal Solution: Doubly Linked List + Hash Map - O(1)**\n\n**Structure:**\n```\nHash Map: {key → Node pointer}\nDLL: Head ←→ [MRU] ←→ ... ←→ [LRU] ←→ Tail\n```\n\n**Example:** Capacity=2, Operations: put(1,1), put(2,2), get(1), put(3,3)\n\n```\nAfter put(1,1):\nHead ←→ [1:1] ←→ Tail\n\nAfter put(2,2):\nHead ←→ [2:2] ←→ [1:1] ←→ Tail\n\nAfter get(1):  (move 1 to front)\nHead ←→ [1:1] ←→ [2:2] ←→ Tail\n\nAfter put(3,3):  (evict 2, add 3)\nHead ←→ [3:3] ←→ [1:1] ←→ Tail\n(2 was LRU, removed)\n```\n\n**Python Implementation:**\n```python\nclass Node:\n    def __init__(self, k, v):\n        self.key, self.val = k, v\n        self.prev = self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.cap = capacity\n        self.cache = {}\n        self.left = Node(0, 0)  # LRU\n        self.right = Node(0, 0)  # MRU\n        self.left.next = self.right\n        self.right.prev = self.left\n    \n    def remove(self, node):\n        prev, nxt = node.prev, node.next\n        prev.next, nxt.prev = nxt, prev\n    \n    def insert(self, node):\n        prev, nxt = self.right.prev, self.right\n        prev.next = nxt.prev = node\n        node.prev, node.next = prev, nxt\n    \n    def get(self, key):\n        if key in self.cache:\n            self.remove(self.cache[key])\n            self.insert(self.cache[key])\n            return self.cache[key].val\n        return -1\n    \n    def put(self, key, val):\n        if key in self.cache:\n            self.remove(self.cache[key])\n        self.cache[key] = Node(key, val)\n        self.insert(self.cache[key])\n        if len(self.cache) > self.cap:\n            lru = self.left.next\n            self.remove(lru)\n            del self.cache[lru.key]\n```\n\n**Complexity:**\n- Get/Put: O(1)\n- Space: O(capacity)\n\n**Key Insight:** Hash map provides O(1) lookup, DLL enables O(1) reordering.",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(capacity)",
+  "videoUrl": "https://www.youtube.com/watch?v=7ABFKPK2hD4",
+  "videoTitle": "LRU Cache - Leetcode 146 - Python (NeetCode)"
+}

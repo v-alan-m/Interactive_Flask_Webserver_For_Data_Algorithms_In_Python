@@ -1,0 +1,18 @@
+{
+  "id": 10,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Group anagrams from a list of strings efficiently",
+  "options": [
+    "Compare each pair: O(n²*m log m)",
+    "Sort each string and use as key: O(n*m log m)",
+    "Count character frequencies as key: O(n*m)",
+    "Both B and C are correct"
+  ],
+  "correct": 3,
+  "explanation": "**Optimal Solutions: Sorted Key or Count Key - O(n*m)**\n\n**Example:** words = [\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]\n\n**Approach 1: Sorted String as Key**\n```\n\"eat\" → sort → \"aet\"\n\"tea\" → sort → \"aet\"\n\"tan\" → sort → \"ant\"\n\"ate\" → sort → \"aet\"\n\"nat\" → sort → \"ant\"\n\"bat\" → sort → \"abt\"\n\nGrouping:\n\"aet\": [\"eat\", \"tea\", \"ate\"]\n\"ant\": [\"tan\", \"nat\"]\n\"abt\": [\"bat\"]\n```\n\n**Approach 2: Character Count as Key**\n```\n\"eat\" → (1a,1e,1t) → tuple(1,0,0,0,1,0...1...)\n\"tea\" → (1a,1e,1t) → same tuple\n\"tan\" → (1a,1n,1t) → different tuple\n```\n\n**Visual Mapping:**\n```\nOriginal   Sorted    Count\n  eat  →   \"aet\"  →  (1,0,0,0,1,0,...1)\n  tea  →   \"aet\"  →  (1,0,0,0,1,0,...1)  ← same group\n  tan  →   \"ant\"  →  (1,0,0,0,0,0,1,...1)\n  \nHash:  \"aet\" → [eat, tea]\n       \"ant\" → [tan]\n```\n\n**Python Implementation:**\n```python\nfrom collections import defaultdict\n\n# Method 1: Sorted key\ndef groupAnagrams1(words):\n    groups = defaultdict(list)\n    for word in words:\n        key = ''.join(sorted(word))\n        groups[key].append(word)\n    return list(groups.values())\n\n# Method 2: Count key (slightly faster)\ndef groupAnagrams2(words):\n    groups = defaultdict(list)\n    for word in words:\n        count = [0] * 26\n        for char in word:\n            count[ord(char) - ord('a')] += 1\n        groups[tuple(count)].append(word)\n    return list(groups.values())\n```\n\n**Complexity:**\n- Sorted: O(n * m log m) where n=words, m=avg length\n- Count: O(n * m) slightly better for long words\n- Space: O(n * m)\n\n**Key Insight:** Both generate unique keys for anagram groups; count is faster for long words.",
+  "timeComplexity": "O(n*m) or O(n*m log m)",
+  "spaceComplexity": "O(n*m)",
+  "videoUrl": "https://www.youtube.com/watch?v=vzdNOK2oB2E",
+  "videoTitle": "Group Anagrams - Leetcode 49 - Python (NeetCode)"
+}

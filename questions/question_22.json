@@ -1,0 +1,18 @@
+{
+  "id": 22,
+  "topic": "Python",
+  "level": "Mid Level",
+  "question": "Find the missing number in an array [0...n] efficiently",
+  "options": [
+    "Sort and scan: O(n log n)",
+    "Use set difference: O(n)",
+    "Use XOR: O(n) with O(1) space",
+    "Both B and C work, C is more space efficient"
+  ],
+  "correct": 3,
+  "explanation": "**Optimal Solutions: Set or XOR - O(n)**\n\n**Problem:** Array has n+1 positions, numbers 0 to n, one missing\n```\nInput:  [3, 0, 1]  (n=3, missing 2)\nOutput: 2\n\nInput:  [0, 1]  (n=2, missing 2)\nOutput: 2\n\nInput:  [9,6,4,2,3,5,7,0,1]  (n=9, missing 8)\nOutput: 8\n```\n\n**Approach 1: Mathematical (Sum Formula)**\n```\nExpected sum: 0+1+2+...+n = n*(n+1)/2\nActual sum: sum(array)\nMissing = Expected - Actual\n\nExample: [3, 0, 1]\nExpected: 3*4/2 = 6\nActual: 3+0+1 = 4\nMissing: 6-4 = 2 ✓\n```\n\n**Approach 2: XOR (Bit Manipulation)**\n```\nProperty: a XOR a = 0, a XOR 0 = a\n\nXOR all indices [0..n] with all array values\nDuplicates cancel out, missing remains\n\nExample: [3, 0, 1]\nIndex XOR:  0 ^ 1 ^ 2 ^ 3 = 0\nArray XOR:  3 ^ 0 ^ 1 = 2\nResult: 0 ^ 2 = 2 ✓\n```\n\n**Visual XOR Process:**\n```\nArray: [3, 0, 1]  Missing: 2\n\nStep 1: XOR all numbers 0 to n\n0 ^ 1 ^ 2 ^ 3\n\nStep 2: XOR all array elements\n3 ^ 0 ^ 1\n\nStep 3: Combine (duplicates cancel)\n(0^0) ^ (1^1) ^ (3^3) ^ 2 = 0 ^ 0 ^ 0 ^ 2 = 2\n ✗       ✗       ✗     ✓\n```\n\n**Python Implementation:**\n```python\n# Method 1: Sum formula (cleanest)\ndef missingNumber1(nums):\n    n = len(nums)\n    expected = n * (n + 1) // 2\n    actual = sum(nums)\n    return expected - actual\n\n# Method 2: XOR (O(1) space, no overflow risk)\ndef missingNumber2(nums):\n    result = len(nums)\n    for i, num in enumerate(nums):\n        result ^= i ^ num\n    return result\n\n# Method 3: Set difference\ndef missingNumber3(nums):\n    n = len(nums)\n    return (set(range(n + 1)) - set(nums)).pop()\n\n# Method 4: XOR alternative (clearer logic)\ndef missingNumber4(nums):\n    xor_all = 0\n    xor_arr = 0\n    \n    # XOR all numbers from 0 to n\n    for i in range(len(nums) + 1):\n        xor_all ^= i\n    \n    # XOR all array elements\n    for num in nums:\n        xor_arr ^= num\n    \n    return xor_all ^ xor_arr\n```\n\n**XOR Truth Table:**\n```\na  b  a^b\n0  0   0\n0  1   1\n1  0   1\n1  1   0\n\nKey properties:\na ^ a = 0\na ^ 0 = a\nXOR is commutative and associative\n```\n\n**Example Trace:**\n```python\nnums = [3, 0, 1]  # missing 2\n\nMethod 1 (Sum):\nn = 3\nexpected = 3*4/2 = 6\nactual = 3+0+1 = 4\nreturn 6-4 = 2\n\nMethod 2 (XOR):\nresult = 3\ni=0: result = 3 ^ 0 ^ 3 = 0\ni=1: result = 0 ^ 1 ^ 0 = 1\ni=2: result = 1 ^ 2 ^ 1 = 2\nreturn 2\n```\n\n**Comparison:**\n```\nMethod          Time    Space   Pros\nSum formula     O(n)    O(1)    Simple, readable\nXOR             O(n)    O(1)    No overflow, elegant\nSet difference  O(n)    O(n)    Very Pythonic\nSort            O(nlogn) O(1)   Not optimal\n```\n\n**Edge Cases:**\n```python\n# Missing 0\nmissingNumber([1, 2, 3])  # 0\n\n# Missing last\nmissingNumber([0, 1, 2])  # 3\n\n# Single element\nmissingNumber([0])  # 1\nmissingNumber([1])  # 0\n\n# Large numbers (XOR avoids overflow)\nmissingNumber(list(range(0, 1000000)) + [1000001])\n```\n\n**Complexity:**\n- Time: O(n) - single pass\n- Space: O(1) for sum/XOR, O(n) for set\n- XOR is preferred for avoiding potential overflow with very large numbers\n\n**Key Insight:** XOR's self-canceling property makes it perfect for finding single missing/duplicate elements.",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(1) for XOR/sum",
+  "videoUrl": "https://www.youtube.com/watch?v=WnPLSRLSANE",
+  "videoTitle": "Missing Number - Leetcode 268 - Python (NeetCode)"
+}

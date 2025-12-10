@@ -1,0 +1,18 @@
+{
+  "id": 15,
+  "topic": "Python",
+  "level": "Mid Level",
+  "question": "Use Python's defaultdict to simplify graph/grouping code",
+  "options": [
+    "Regular dict with manual initialization",
+    "defaultdict(list): auto-creates empty lists",
+    "defaultdict(int): auto-creates 0 for counters",
+    "Both B and C are useful patterns"
+  ],
+  "correct": 3,
+  "explanation": "**Optimal Solution: defaultdict - Auto-initialization**\n\n**Problem: Regular dict requires checking if key exists**\n```python\n# Regular dict - verbose\ngraph = {}\nif node not in graph:\n    graph[node] = []\ngraph[node].append(neighbor)\n\n# defaultdict - clean\nfrom collections import defaultdict\ngraph = defaultdict(list)\ngraph[node].append(neighbor)  # Just works!\n```\n\n**Common Use Cases:**\n\n**1. Grouping/Graph (defaultdict(list))**\n```python\nfrom collections import defaultdict\n\n# Group words by first letter\nwords = [\"apple\", \"ant\", \"banana\", \"bear\"]\ngroups = defaultdict(list)\n\nfor word in words:\n    groups[word[0]].append(word)\n\n# {'a': ['apple', 'ant'], 'b': ['banana', 'bear']}\n```\n\n**2. Counting (defaultdict(int))**\n```python\n# Count character frequencies\ntext = \"hello\"\nfreq = defaultdict(int)\n\nfor char in text:\n    freq[char] += 1  # No need to check if exists!\n\n# {'h': 1, 'e': 1, 'l': 2, 'o': 1}\n```\n\n**3. Nested defaultdict**\n```python\n# Adjacency list with weights\ngraph = defaultdict(lambda: defaultdict(int))\n\ngraph[1][2] = 5  # Edge from 1 to 2 with weight 5\ngraph[1][3] = 3\n# {1: {2: 5, 3: 3}}\n```\n\n**Python Implementation:**\n```python\nfrom collections import defaultdict\n\n# Example 1: Build graph from edges\ndef buildGraph(edges):\n    graph = defaultdict(list)\n    for u, v in edges:\n        graph[u].append(v)\n        graph[v].append(u)  # undirected\n    return graph\n\n# Example 2: Group anagrams\ndef groupAnagrams(words):\n    groups = defaultdict(list)\n    for word in words:\n        key = ''.join(sorted(word))\n        groups[key].append(word)\n    return list(groups.values())\n\n# Example 3: Word frequency\ndef wordCount(text):\n    freq = defaultdict(int)\n    for word in text.split():\n        freq[word] += 1\n    return dict(freq)\n```\n\n**Comparison:**\n```\nRegular dict:\nif key not in d:\n    d[key] = []\nd[key].append(value)\n\ndefaultdict(list):\nd[key].append(value)  # Much cleaner!\n```\n\n**Available factory functions:**\n```python\ndefaultdict(list)   # []\ndefaultdict(int)    # 0\ndefaultdict(set)    # set()\ndefaultdict(dict)   # {}\ndefaultdict(str)    # ''\ndefaultdict(lambda: default_value)  # custom\n```\n\n**Complexity:**\n- Access: O(1) same as regular dict\n- Space: O(n) same as regular dict\n- No performance overhead\n\n**Key Insight:** defaultdict eliminates boilerplate key-checking code, making graph/grouping operations cleaner.",
+  "timeComplexity": "O(1) access",
+  "spaceComplexity": "O(n)",
+  "videoUrl": "https://www.youtube.com/watch?v=mCAWK71Xpug",
+  "videoTitle": "Python defaultdict - Collections Module (Corey Schafer)"
+}

@@ -1,0 +1,18 @@
+{
+  "id": 7,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Design a data structure for range sum queries (immutable array)",
+  "options": [
+    "Recalculate sum each time: O(n) per query",
+    "Use prefix sum array: O(1) per query",
+    "Use segment tree: O(log n) per query",
+    "Use binary indexed tree: O(log n) per query"
+  ],
+  "correct": 1,
+  "explanation": "**Optimal Solution: Prefix Sum Array - O(1) per query**\n\n**Concept:** Pre-compute cumulative sums\n\n**Example:** arr = [1, 3, 5, 7, 9]\n\nBuild prefix sum:\n```\nprefix[0] = 0\nprefix[1] = 0 + 1 = 1\nprefix[2] = 1 + 3 = 4\nprefix[3] = 4 + 5 = 9\nprefix[4] = 9 + 7 = 16\nprefix[5] = 16 + 9 = 25\n\nprefix = [0, 1, 4, 9, 16, 25]\n```\n\n**Query sum(left=1, right=3):**\n```\nRange: [3, 5, 7]\nSum = prefix[4] - prefix[1] = 16 - 1 = 15 ✓\n```\n\n**Visual:**\n```\nIndex:     0  1  2  3  4\nArray:     1  3  5  7  9\n           ↓  ↓  ↓  ↓  ↓\nPrefix:  0  1  4  9 16 25\n\nQuery [1,3]: prefix[4] - prefix[1]\n             |←--- sum --->|\n                3+5+7 = 15\n```\n\n**Python Implementation:**\n```python\nclass NumArray:\n    def __init__(self, nums):\n        self.prefix = [0]\n        for num in nums:\n            self.prefix.append(self.prefix[-1] + num)\n    \n    def sumRange(self, left, right):\n        return self.prefix[right + 1] - self.prefix[left]\n\n# Usage:\nna = NumArray([1, 3, 5, 7, 9])\nna.sumRange(1, 3)  # Returns 15\n```\n\n**Complexity:**\n- Init: O(n)\n- Query: O(1)\n- Space: O(n)\n\n**Key Insight:** Trade one-time O(n) preprocessing for O(1) queries.",
+  "timeComplexity": "O(1) query, O(n) init",
+  "spaceComplexity": "O(n)",
+  "videoUrl": "https://www.youtube.com/watch?v=pVS3yhlzrlQ",
+  "videoTitle": "Range Sum Query - Immutable - Leetcode 303 - Python (NeetCode)"
+}

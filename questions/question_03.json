@@ -1,0 +1,18 @@
+{
+  "id": 3,
+  "topic": "Data Structures",
+  "level": "General",
+  "question": "Find the median from a data stream efficiently",
+  "options": [
+    "Sort array each time: O(n log n) per insertion",
+    "Use two heaps (max heap + min heap): O(log n) per insertion",
+    "Use single sorted list: O(n) per insertion",
+    "Use binary search tree: O(log n) average"
+  ],
+  "correct": 1,
+  "explanation": "**Optimal Solution: Two Heaps - O(log n) per operation**\n\n**Concept:** Split numbers into two halves\n- Max heap (left): stores smaller half\n- Min heap (right): stores larger half\n\n**Example Stream:** [5, 15, 1, 3]\n\n```\nAfter 5:    maxHeap=[5]  minHeap=[]  → median=5\nAfter 15:   maxHeap=[5]  minHeap=[15] → median=10\nAfter 1:    maxHeap=[5,1] minHeap=[15] → median=5\nAfter 3:    maxHeap=[3,1] minHeap=[5,15] → median=4\n```\n\n**Visual Balance:**\n```\n      Left (max)  |  Right (min)\n      [3, 1]      |  [5, 15]\n         ↓        |     ↓\n      peek=3      |  peek=5\n      \nMedian = (3 + 5) / 2 = 4\n```\n\n**Python Implementation:**\n```python\nimport heapq\nclass MedianFinder:\n    def __init__(self):\n        self.small = []  # max heap (negate values)\n        self.large = []  # min heap\n    \n    def addNum(self, num):\n        heapq.heappush(self.small, -num)\n        heapq.heappush(self.large, -heapq.heappop(self.small))\n        if len(self.small) < len(self.large):\n            heapq.heappush(self.small, -heapq.heappop(self.large))\n    \n    def findMedian(self):\n        if len(self.small) > len(self.large):\n            return -self.small[0]\n        return (-self.small[0] + self.large[0]) / 2\n```\n\n**Complexity:**\n- Insert: O(log n)\n- Get median: O(1)\n- Space: O(n)\n\n**Key Insight:** Maintaining balanced heaps ensures constant-time median access.",
+  "timeComplexity": "O(log n) insert, O(1) median",
+  "spaceComplexity": "O(n)",
+  "videoUrl": "https://www.youtube.com/watch?v=itmhHWaHupI",
+  "videoTitle": "Find Median from Data Stream - Leetcode 295 - Python (NeetCode)"
+}

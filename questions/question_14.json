@@ -1,0 +1,18 @@
+{
+  "id": 14,
+  "topic": "Python",
+  "level": "Mid Level",
+  "question": "Check if two strings are anagrams using Python collections",
+  "options": [
+    "Sort both strings: O(n log n)",
+    "Use Counter: O(n)",
+    "Use sorted(): O(n log n)",
+    "Both B and C work, B is faster"
+  ],
+  "correct": 3,
+  "explanation": "**Optimal Solutions: Counter O(n) or sorted() O(n log n)**\n\n**Example:** s1 = \"listen\", s2 = \"silent\"\n\n**Approach 1: Counter (Fastest for long strings)**\n```python\nfrom collections import Counter\n\nCounter(s1) == Counter(s2)\n# Counter({'l':1, 'i':1, 's':1, 't':1, 'e':1, 'n':1})\n# Counter({'s':1, 'i':1, 'l':1, 'e':1, 'n':1, 't':1})\n# True - they match!\n```\n\n**Approach 2: sorted() (Simpler, slightly slower)**\n```python\nsorted(s1) == sorted(s2)\n# ['e', 'i', 'l', 'n', 's', 't'] == ['e', 'i', 'l', 'n', 's', 't']\n# True\n```\n\n**Visual Comparison:**\n```\nString 1: \"listen\"\nCounter:  {l:1, i:1, s:1, t:1, e:1, n:1}\nSorted:   ['e', 'i', 'l', 'n', 's', 't']\n\nString 2: \"silent\"\nCounter:  {s:1, i:1, l:1, e:1, n:1, t:1}\nSorted:   ['e', 'i', 'l', 'n', 's', 't']\n\nMatch? ✓\n```\n\n**Python Implementation:**\n```python\nfrom collections import Counter\n\n# Method 1: Counter (O(n))\ndef isAnagram1(s1, s2):\n    return Counter(s1) == Counter(s2)\n\n# Method 2: sorted (O(n log n))\ndef isAnagram2(s1, s2):\n    return sorted(s1) == sorted(s2)\n\n# Method 3: Manual count with dict\ndef isAnagram3(s1, s2):\n    if len(s1) != len(s2):\n        return False\n    \n    count = {}\n    for char in s1:\n        count[char] = count.get(char, 0) + 1\n    \n    for char in s2:\n        if char not in count:\n            return False\n        count[char] -= 1\n        if count[char] < 0:\n            return False\n    \n    return all(v == 0 for v in count.values())\n\n# Method 4: One-liner with sorted\ndef isAnagram4(s1, s2):\n    return sorted(s1) == sorted(s2)\n```\n\n**Edge Cases:**\n```python\n# Different lengths\nisAnagram(\"abc\", \"abcd\")  # False\n\n# Empty strings\nisAnagram(\"\", \"\")  # True\n\n# Case sensitivity\nisAnagram(\"Listen\", \"Silent\")  # False\nisAnagram(\"Listen\".lower(), \"Silent\".lower())  # True\n\n# Spaces matter\nisAnagram(\"a b\", \"ab\")  # False\n```\n\n**Performance Comparison:**\n```\nMethod          Time        Best for\nCounter         O(n)        Long strings\nsorted()        O(n log n)  Short strings (simpler code)\nManual dict     O(n)        Custom logic needed\n```\n\n**Complexity:**\n- Counter: O(n) time, O(k) space (k = unique chars)\n- sorted(): O(n log n) time, O(n) space\n\n**Key Insight:** Counter is faster but sorted() is more concise; choose based on string length and readability needs.",
+  "timeComplexity": "O(n) or O(n log n)",
+  "spaceComplexity": "O(n)",
+  "videoUrl": "https://www.youtube.com/watch?v=9UtInBqnCgA",
+  "videoTitle": "Valid Anagram - Leetcode 242 - Python (NeetCode)"
+}

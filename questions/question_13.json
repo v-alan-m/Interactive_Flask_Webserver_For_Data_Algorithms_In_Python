@@ -1,0 +1,18 @@
+{
+  "id": 13,
+  "topic": "Python",
+  "level": "Mid Level",
+  "question": "Use Python's deque for efficient queue operations",
+  "options": [
+    "Use list with pop(0): O(n) for dequeue",
+    "Use deque with popleft(): O(1) for dequeue",
+    "Use queue.Queue: thread-safe but slower",
+    "Both B and C work, B is faster"
+  ],
+  "correct": 3,
+  "explanation": "**Optimal Solution: deque.popleft() - O(1)**\n\n**Why deque over list?**\n```\nlist.pop(0):     O(n) - shifts all elements\ndeque.popleft(): O(1) - optimized doubly-linked list\n\nExample with 1 million elements:\nlist.pop(0):  ~50ms per operation\ndeque.popleft(): ~0.001ms per operation\n```\n\n**Example: BFS using deque**\n```\nGraph:     1\n          / \\\n         2   3\n        /\n       4\n\nBFS order: 1 → 2 → 3 → 4\n```\n\n**Deque Operations:**\n```python\nfrom collections import deque\n\ndq = deque([1, 2, 3])\n\n# Left operations (O(1))\ndq.appendleft(0)    # deque([0, 1, 2, 3])\ndq.popleft()        # 0, deque([1, 2, 3])\n\n# Right operations (O(1))\ndq.append(4)        # deque([1, 2, 3, 4])\ndq.pop()            # 4, deque([1, 2, 3])\n\n# Access\ndq[0]              # 1 (O(1))\ndq[-1]             # 3 (O(1))\n```\n\n**Python Implementation:**\n```python\nfrom collections import deque\n\n# BFS with deque\ndef bfs(graph, start):\n    visited = set([start])\n    queue = deque([start])\n    result = []\n    \n    while queue:\n        node = queue.popleft()  # O(1)\n        result.append(node)\n        \n        for neighbor in graph[node]:\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)  # O(1)\n    \n    return result\n\n# Level-order traversal\ndef levelOrder(root):\n    if not root:\n        return []\n    \n    result = []\n    queue = deque([root])\n    \n    while queue:\n        level_size = len(queue)\n        level = []\n        \n        for _ in range(level_size):\n            node = queue.popleft()\n            level.append(node.val)\n            \n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        \n        result.append(level)\n    \n    return result\n```\n\n**Comparison:**\n```\nOperation       list        deque       queue.Queue\nappend          O(1)        O(1)        O(1)\npop(0)/get      O(n)        O(1)        O(1)\nThread-safe     No          No          Yes\nUse case        Stack       Queue       Multi-thread\n```\n\n**Complexity:**\n- append/popleft: O(1)\n- Access by index: O(1)\n- Space: O(n)\n\n**Key Insight:** Always use deque for queue operations; list.pop(0) is O(n) due to shifting.",
+  "timeComplexity": "O(1) per operation",
+  "spaceComplexity": "O(n)",
+  "videoUrl": "https://www.youtube.com/watch?v=R13BD8qKeTg",
+  "videoTitle": "Python Collections - deque (Tech With Tim)"
+}

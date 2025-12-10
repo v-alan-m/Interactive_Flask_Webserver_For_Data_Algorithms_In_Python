@@ -1,0 +1,18 @@
+{
+  "id": 16,
+  "topic": "Python",
+  "level": "Mid Level",
+  "question": "Detect a cycle in a linked list using Python",
+  "options": [
+    "Use set to track visited nodes: O(n) space",
+    "Floyd's cycle detection (slow/fast pointers): O(1) space",
+    "Mark visited nodes: modifies structure",
+    "Both A and B work, B is optimal"
+  ],
+  "correct": 3,
+  "explanation": "**Optimal Solution: Floyd's Cycle Detection - O(1) space**\n\n**Concept: Tortoise and Hare**\n- Slow pointer moves 1 step\n- Fast pointer moves 2 steps\n- If cycle exists, they will meet\n\n**Example with cycle:**\n```\n1 → 2 → 3 → 4\n        ↑   ↓\n        6 ← 5\n\nStep 0: slow=1, fast=1\nStep 1: slow=2, fast=3\nStep 2: slow=3, fast=5\nStep 3: slow=4, fast=3\nStep 4: slow=5, fast=5  ← MEET! Cycle detected\n```\n\n**Example without cycle:**\n```\n1 → 2 → 3 → 4 → None\n\nStep 0: slow=1, fast=1\nStep 1: slow=2, fast=3\nStep 2: slow=3, fast=None  ← Fast reaches end\n```\n\n**Visual Animation:**\n```\nCycle:    1 → 2 → 3 → 4\n                  ↑   ↓\n                  6 ← 5\n\nTime 0:  S,F\nTime 1:      S   F\nTime 2:          S       F\nTime 3:              S   F\nTime 4:                  S,F  ← Meet!\n```\n\n**Python Implementation:**\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\n# Method 1: Floyd's Cycle Detection (optimal)\ndef hasCycle(head):\n    if not head or not head.next:\n        return False\n    \n    slow = head\n    fast = head\n    \n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        \n        if slow == fast:\n            return True\n    \n    return False\n\n# Method 2: Using set (simpler but O(n) space)\ndef hasCycleSet(head):\n    visited = set()\n    current = head\n    \n    while current:\n        if current in visited:\n            return True\n        visited.add(current)\n        current = current.next\n    \n    return False\n\n# Bonus: Find cycle start position\ndef detectCycle(head):\n    if not head or not head.next:\n        return None\n    \n    # Phase 1: Detect cycle\n    slow = fast = head\n    has_cycle = False\n    \n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow == fast:\n            has_cycle = True\n            break\n    \n    if not has_cycle:\n        return None\n    \n    # Phase 2: Find start of cycle\n    slow = head\n    while slow != fast:\n        slow = slow.next\n        fast = fast.next\n    \n    return slow\n```\n\n**Why Floyd's Algorithm Works:**\n```\nMath proof:\n- Let cycle length = C\n- When slow enters cycle, fast is K steps ahead\n- Fast gains 1 step per iteration\n- They meet in C - K steps\n\nDistance traveled:\n- Slow: K + C - K = C\n- Fast: K + 2(C - K) = 2C - K\n```\n\n**Comparison:**\n```\nMethod              Time    Space   Notes\nFloyd's (2 ptr)     O(n)    O(1)    Optimal\nHash Set            O(n)    O(n)    Simpler\nModify nodes        O(n)    O(1)    Changes structure\n```\n\n**Complexity:**\n- Time: O(n) - visits each node at most twice\n- Space: O(1) - only two pointers\n\n**Key Insight:** Two pointers moving at different speeds will always meet in a cycle, like runners on a track.",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(1)",
+  "videoUrl": "https://www.youtube.com/watch?v=gBTe7lFR3vc",
+  "videoTitle": "Linked List Cycle Detection - Leetcode 141 - Python (NeetCode)"
+}
