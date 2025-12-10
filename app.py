@@ -12,7 +12,7 @@ from pathlib import Path
 app = Flask(__name__)
 
 # HTML Template with embedded CSS and JavaScript
-HTML_TEMPLATE = '''
+HTML_TEMPLATE = r'''
 <!DOCTYPE html>
 <html lang="en">
 <head>
